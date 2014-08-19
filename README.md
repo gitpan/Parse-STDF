@@ -10,8 +10,8 @@ Teradyne. The record layouts, field definitions, and sizes are all described wit
 years, parser tools have been developed to decode this binary format in several scripting languages, but as 
 of yet nothing has been released to CPAN for Perl.
 
-B<Parse::STDF> is a first attempt. It is an object oriented module containing methods which invoke APIs of
-an underlying C library called C<libstdf> (see L<http://freestdf.sourceforge.net/>).  C<libstdf> performs 
+Parse::STDF is a first attempt. It is an object oriented module containing methods which invoke APIs of
+an underlying C library called libstdf (see <http://freestdf.sourceforge.net/>).  libstdf performs 
 the grunt work of reading and parsing binary data into STDF records represented as C-structs.  These 
 structs are in turn referenced as Perl objects.
 

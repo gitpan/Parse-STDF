@@ -7,11 +7,11 @@ require 5.10.1;
 
 =head1 NAME
 
-B<Parse::STDF> - Module for parsing files in Standard Test Data Format
+Parse::STDF - Module for parsing files in Standard Test Data Format
 
 =cut
 
-use version; $VERSION = qv('0.2.1');
+use version; $VERSION = qv('0.2.2');
 
 =pod
 
@@ -64,7 +64,7 @@ Teradyne. The record layouts, field definitions, and sizes are all described wit
 years, parser tools have been developed to decode this binary format in several scripting languages, but as 
 of yet nothing has been released to CPAN for Perl.
 
-B<Parse::STDF> is a first attempt. It is an object oriented module containing methods which invoke APIs of
+Parse::STDF is a first attempt. It is an object oriented module containing methods which invoke APIs of
 an underlying C library called C<libstdf> (see L<http://freestdf.sourceforge.net/>).  C<libstdf> performs 
 the grunt work of reading and parsing binary data into STDF records represented as C-structs.  These 
 structs are in turn referenced as Perl objects.
@@ -91,13 +91,10 @@ require Exporter;
 
 =head2 new
 
-new(stdf)
-
-Create a new C<stdf> object.  The object represents a single file which may be in 
-compressed gzip format.
-
    my $s1 = Parse::STDF->new ( "file.stdf" );
    my $s2 = Parse::STDF->new ( "file.stdf.gz" );
+
+Creates a new C<stdf> object.  The object represents a single file which may be in compressed gzip format.
 
 =cut
 
@@ -128,12 +125,10 @@ sub new # ( $stdf )
 
 =head2 get_record 
 
-get_record()
-
-Reads the next record using the underlying C<libstdf> library.  Returns a true/false status.
-
    my $s = Parse::STDF->new ( "file.stdf" );
    while ( $s->get_record() ) { ... };
+
+Reads the next record using the underlying C<libstdf> library.  Returns a true/false status.
 
 =cut
 
@@ -159,8 +154,8 @@ sub get_record # ()
 
 =head2 recname 
 
-recname()
-
+   if ( $s->recname() eq "MIR" ) { ... } 
+ 
 Returns currently active record name (e.g. "MIR", "FAR", "PCR" etc). 
 
 =cut
@@ -174,10 +169,6 @@ sub recname # ()
 =pod
 
 =head2 mir 
-
-mir() 
-
-Returns a hash reference to a MIR record object. 
 
    my $mir = $s->mir();
    printf("\tSETUP_T: %s\n", ctime($mir->{SETUP_T}));
@@ -219,6 +210,8 @@ Returns a hash reference to a MIR record object.
    printf("\tSERL_NUM: %s\n", $mir->{SERL_NUM});
    printf("\tSUPR_NAM: %s\n", $mir->{SUPR_NAM});
 
+Returns a hash reference to a MIR record object. 
+
 =cut
 
 sub mir # ()
@@ -230,10 +223,6 @@ sub mir # ()
 =pod
 
 =head2 sdr 
-
-sdr() 
-
-Returns a hash reference to a SDR record object. 
 
    my $sdr = $s->sdr();
    printf("\tHEAD_NUM: %s\n", $sdr->{HEAD_NUM});
@@ -257,6 +246,8 @@ Returns a hash reference to a SDR record object.
    printf("\tEXTR_TYP: %s\n", $sdr->{EXTR_TYP});
    printf("\tEXTR_ID: %s\n", $sdr->{EXTR_ID});
 
+Returns a hash reference to a SDR record object. 
+
 =cut
 
 sub sdr # ()
@@ -269,10 +260,6 @@ sub sdr # ()
 
 =head2 pcr 
 
-pcr() 
-
-Returns a hash reference to a PCR record object. 
-
    my $pcr = $s->pcr();
    printf("\tHEAD_NUM: %s\n", $pcr->{HEAD_NUM});
    printf("\tSITE_NUM: %s\n", $pcr->{SITE_NUM});
@@ -281,6 +268,8 @@ Returns a hash reference to a PCR record object.
    printf("\tABRT_CNT: %s\n", $pcr->{ABRT_CNT});
    printf("\tGOOD_CNT: %s\n", $pcr->{GOOD_CNT});
    printf("\tFUNC_CNT: %s\n", $pcr->{FUNC_CNT});
+
+Returns a hash reference to a PCR record object. 
 
 =cut
 
@@ -294,15 +283,13 @@ sub pcr # ()
 
 =head2 mrr 
 
-mrr() 
-
-Returns a hash reference to a MRR record object. 
-
    my $mrr = $s->mrr();
    printf("\tFINISH_T: %s\n", ctime($mrr->{FINISH_T}));
    printf("\tDISP_COD: %s\n", $mrr->{DISP_COD});
    printf("\tUSR_DESC: %s\n", $mrr->{USR_DESC});
    printf("\tEXC_DESC: %s\n", $mrr->{EXC_DESC});
+
+Returns a hash reference to a MRR record object. 
 
 =cut
 
@@ -316,15 +303,13 @@ sub mrr # ()
 
 =head2 wir 
 
-wir() 
-
-Returns a hash reference to a WIR record object. 
-
    my $wir = $s->wir();
    printf("\tHEAD_NUM: %s\n", $wir->{HEAD_NUM});
    printf("\tSITE_GRP: %s\n", $wir->{SITE_GRP});
    printf("\tSTART_T: %s\n", ctime($wir->{START_T}));
    printf("\tWAFER_ID: %s\n", $wir->{WAFER_ID});
+
+Returns a hash reference to a WIR record object. 
 
 =cut
 
@@ -338,13 +323,11 @@ sub wir # ()
 
 =head2 pir 
 
-pir() 
-
-Returns a hash reference to a PIR record object. 
-
    my $pir = $s->pir();
    printf("\tHEAD_NUM: %s\n", $pir->{HEAD_NUM});
    printf("\tSITE_NUM: %s\n", $pir->{SITE_NUM});
+
+Returns a hash reference to a PIR record object. 
 
 =cut
 
@@ -357,10 +340,6 @@ sub pir # ()
 =pod
 
 =head2 prr 
-
-prr() 
-
-Returns a hash reference to a PRR record object. 
 
    my $prr = $s->prr();
    printf("\tHEAD_NUM: %s\n", $prr->{HEAD_NUM});
@@ -376,6 +355,8 @@ Returns a hash reference to a PRR record object.
    printf("\tPART_TXT: %s\n", $prr->{PART_TXT});
    printf("\tPART_FIX: %s\n", $prr->{PART_FIX});
 
+Returns a hash reference to a PRR record object. 
+
 =cut
 
 sub prr # ()
@@ -387,10 +368,6 @@ sub prr # ()
 =pod
 
 =head2 ptr 
-
-ptr() 
-
-Returns a hash reference to a PTR record object. 
 
    my $ptr = $s->ptr();
    printf("\tTEST_NUM: %s\n", $ptr->{TEST_NUM});
@@ -412,6 +389,8 @@ Returns a hash reference to a PTR record object.
    printf("\tLO_SPEC: %s\n", $ptr->{LO_SPEC});
    printf("\tHI_SPEC: %s\n", $ptr->{HI_SPEC});
 
+Returns a hash reference to a PTR record object. 
+
 =cut
 
 sub ptr # ()
@@ -424,12 +403,10 @@ sub ptr # ()
 
 =head2 dtr 
 
-dtr() 
-
-Returns a hash reference to a DTR record object. 
-
    my $dtr = $s->dtr();
    printf("\tTEXT_DAT: %s\n", $dtr->{TEXT_DAT});
+
+Returns a hash reference to a DTR record object. 
 
 =cut
 
@@ -443,13 +420,11 @@ sub dtr # ()
 
 =head2 atr 
 
-atr() 
-
-Returns a hash reference to a ATR record object. 
-
    my $atr = $s->atr();
    printf ("\tMID_TIM: %s\n", ctime($atr->{MOD_TIM}) );
    printf ("\tCMD_LINE: %s\n", $atr->{CMD_LINE} );
+
+Returns a hash reference to a ATR record object. 
 
 =cut
 
@@ -463,13 +438,11 @@ sub atr # ()
 
 =head2 far 
 
-far() 
-
-Returns a hash reference to a FAR record object. 
-
    my $far = $s->far();
    printf ("\tCPU_TYPE: %s\n", $far->{CPU_TYPE});
    printf ("\tSTDF_VER: %s\n", $far->{STDF_VER});
+
+Returns a hash reference to a FAR record object. 
 
 =cut
 
@@ -483,10 +456,6 @@ sub far # ()
 
 =head2 hbr 
 
-hbr() 
-
-Returns a hash reference to a HBR record object. 
-
    my $hbr = $s->hbr();
    printf("\tHEAD_NUM: %s\n", $hbr->{HEAD_NUM});
    printf("\tSITE_NUM: %s\n", $hbr->{SITE_NUM});
@@ -494,6 +463,8 @@ Returns a hash reference to a HBR record object.
    printf("\tHBIN_CNT: %s\n", $hbr->{HBIN_CNT});
    printf("\tHBIN_PF: %s\n", $hbr->{HBIN_PF});
    printf("\tHBIN_NAM: %s\n", $hbr->{HBIN_NAM});
+
+Returns a hash reference to a HBR record object. 
 
 =cut
 
@@ -507,10 +478,6 @@ sub hbr # ()
 
 =head2 sbr 
 
-sbr() 
-
-Returns a hash reference to a SBR record object. 
-
    my $sbr = $s->sbr();
    printf("\tHEAD_NUM: %s\n", $sbr->{HEAD_NUM});
    printf("\tSITE_NUM: %s\n", $sbr->{SITE_NUM});
@@ -518,6 +485,8 @@ Returns a hash reference to a SBR record object.
    printf("\tSBIN_CNT: %s\n", $sbr->{SBIN_CNT});
    printf("\tSBIN_PF: %s\n", $sbr->{SBIN_PF});
    printf("\tSBIN_NAM: %s\n", $sbr->{SBIN_NAM});
+
+Returns a hash reference to a SBR record object. 
 
 =cut
 
@@ -531,10 +500,6 @@ sub sbr # ()
 
 =head2 pmr 
 
-pmr() 
-
-Returns a hash reference to a PMR record object. 
-
    my $pmr = $s->pmr();
    printf("\tPMR_INDX: %s\n", $pmr->{PMR_INDX});
    printf("\tCHAN_TYP: %s\n", $pmr->{CHAN_TYP});
@@ -543,6 +508,8 @@ Returns a hash reference to a PMR record object.
    printf("\tLOG_NAM: %s\n", $pmr->{LOG_NAM});
    printf("\tHEAD_NUM: %s\n", $pmr->{HEAD_NUM});
    printf("\tSITE_NUM: %s\n", $pmr->{SITE_NUM});
+
+Returns a hash reference to a PMR record object. 
 
 =cut
 
@@ -556,15 +523,13 @@ sub pmr # ()
 
 =head2 pgr 
 
-pgr() 
-
-Returns a hash reference to a PGR record object. 
-
    my $pgr = $s->pgr();
    printf("\tGRP_INDX: %s\n", $pgr->{GRP_INDX});
    printf("\tGRP_NAM: %s\n", $pgr->{GRP_NAM});
    printf("\tINDX_CNT: %s\n", $pgr->{INDX_CNT});
    print "\tPMR_INDX: ", join(", ",@{xU2_array_ref($pgr->{PMR_INDX}, $pgr->{INDX_CNT})}), "\n";
+
+Returns a hash reference to a PGR record object. 
 
 =cut
 
@@ -578,10 +543,6 @@ sub pgr # ()
 
 =head2 plr 
 
-plr() 
-
-Returns a hash reference to a PLR record object. 
-
    my $plr = $s->plr();
    printf("\tGRP_CNT: %s\n", $plr->{GRP_CNT});
    print "\tGRP_INDX: ", join(", ",@{xU2_array_ref($plr->{GRP_INDX}, $plr->{GRP_CNT})}), "\n";
@@ -591,6 +552,8 @@ Returns a hash reference to a PLR record object.
    print "\tRTN_CHAR: ", join(", ",@{xCn_array_ref($plr->{RTN_CHAR}, $plr->{GRP_CNT})}), "\n";
    print "\tPGM_CHAL: ", join(", ",@{xCn_array_ref($plr->{PGM_CHAL}, $plr->{GRP_CNT})}), "\n";
    print "\tRTN_CHAL: ", join(", ",@{xCn_array_ref($plr->{RTN_CHAL}, $plr->{GRP_CNT})}), "\n";
+
+Returns a hash reference to a PLR record object. 
 
 =cut
 
@@ -604,13 +567,11 @@ sub plr # ()
 
 =head2 rdr 
 
-rdr() 
-
-Returns a hash reference to a RDR record object. 
-
    my $rdr = $s->rdr();
    printf("\tNUM_BINS: %s\n", $rdr->{NUM_BINS});
    print "\tRTST_BIN: ", join(", ",@{xU2_array_ref($rdr->{RTST_BIN}, $rdr->{NUM_BINS})}), "\n";
+
+Returns a hash reference to a RDR record object. 
 
 =cut
 
@@ -623,10 +584,6 @@ sub rdr # ()
 =pod
 
 =head2 wrr 
-
-wrr() 
-
-Returns a hash reference to a WRR record object. 
 
    my $wrr = $s->wrr();
    printf("\tHEAD_NUM: %s\n", $wrr->{HEAD_NUM});
@@ -644,6 +601,8 @@ Returns a hash reference to a WRR record object.
    printf("\tUSR_DESC: %s\n", $wrr->{USR_DESC});
    printf("\tEXC_DESC: %s\n", $wrr->{EXC_DESC});
 
+Returns a hash reference to a WRR record object. 
+
 =cut
 
 sub wrr # ()
@@ -656,10 +615,6 @@ sub wrr # ()
 
 =head2 wcr 
 
-wcr() 
-
-Returns a hash reference to a WCR record object. 
-
    my $wcr = $s->wcr();
    printf("\tWAFR_SIZ: %s\n", $wcr->{WAFR_SIZ});
    printf("\tDIE_HT: %s\n", $wcr->{DIE_HT});
@@ -670,6 +625,8 @@ Returns a hash reference to a WCR record object.
    printf("\tCENTER_Y: %s\n", $wcr->{CENTER_Y});
    printf("\tPOS_X: %s\n", $wcr->{POS_X});
    printf("\tPOS_Y: %s\n", $wcr->{POS_Y});
+
+Returns a hash reference to a WCR record object. 
 
 =cut
 
@@ -682,10 +639,6 @@ sub wcr # ()
 =pod
 
 =head2 tsr 
-
-tsr() 
-
-Returns a hash reference to a TSR record object. 
 
    my $tsr = $s->tsr();
    printf("\tHEAD_NUM: %s\n", $tsr->{HEAD_NUM});
@@ -705,6 +658,8 @@ Returns a hash reference to a TSR record object.
    printf("\tTST_SUMS: %s\n", $tsr->{TST_SUMS});
    printf("\tTST_SQRS: %s\n", $tsr->{TST_SQRS});
 
+Returns a hash reference to a TSR record object. 
+
 =cut
 
 sub tsr # ()
@@ -716,10 +671,6 @@ sub tsr # ()
 =pod
 
 =head2 mpr 
-
-mpr() 
-
-Returns a hash reference to a MPR record object. 
 
    my $mpr = $s->mpr();
    printf("\tTEST_NUM: %s\n", $mpr->{TEST_NUM});
@@ -750,6 +701,8 @@ Returns a hash reference to a MPR record object.
    printf("\tLO_SPEC: %s\n", $mpr->{LO_SPEC});
    printf("\tHI_SPEC: %s\n", $mpr->{HI_SPEC});
 
+Returns a hash reference to a MPR record object. 
+
 =cut
 
 sub mpr # ()
@@ -761,10 +714,6 @@ sub mpr # ()
 =pod
 
 =head2 ftr 
-
-ftr() 
-
-Returns a hash reference to a FTR record object. 
 
    my $ftr = $s->ftr();
    printf("\tTEST_NUM: %s\n", $ftr->{TEST_NUM});
@@ -796,6 +745,8 @@ Returns a hash reference to a FTR record object.
    printf("\tPATG_NUM: %s\n", $ftr->{PATG_NUM});
    print "\tSPIN_MAP: ", join(", ", @{$ftr->{SPIN_MAP}} ), "\n";
 
+Returns a hash reference to a FTR record object. 
+
 =cut
 
 sub ftr # ()
@@ -808,12 +759,10 @@ sub ftr # ()
 
 =head2 bps 
 
-bps() 
-
-Returns a hash reference to a BPS record object. 
-
    my $bps = $s->bps();
    printf("\tSEQ_NAME: %s\n", $bps->{SEQ_NAME});
+
+Returns a hash reference to a BPS record object. 
 
 =cut
 
@@ -827,11 +776,9 @@ sub bps # ()
 
 =head2 eps 
 
-eps() 
+   my $eps = $s->eps();
 
 Returns a hash reference to a EPS record object. 
-
-   my $eps = $s->eps();
 
 =cut
 
@@ -845,11 +792,9 @@ sub eps # ()
 
 =head2 gds 
 
-gds() 
+   my $gds = $s->gds();
 
 Returns a hash reference to a GDS record object. 
-
-   my $gds = $s->gds();
 
 =cut
 
@@ -862,10 +807,6 @@ sub gds # ()
 =pod
 
 =head2 unknown
-
-unknown()
-
-Returns a hash reference to a UNKNOWN record object. 
 
    my $unk = $s->unknown();
 
@@ -884,7 +825,7 @@ sub unknown # ()
 
 =head2 version
 
-version()
+   my $ver = $s->version();
 
 Returns the STDF version number which identifies the STDF specification. 
 
@@ -900,27 +841,15 @@ sub version # ()
 
 =head2 xU1_array_ref, xU2_array_ref, xN1_array_ref, xR4_array_ref, xCn_array_ref
 
-xU1_array_ref(xU1, len)
-
-xU2_array_ref(xU2, len)
-
-xN1_array_ref(xN1, len)
-
-xR4_array_ref(xR4, len)
-
-xCn_array_ref(xCn, len)
-
-Utility methods to convert C<libstdf> data types (xU1, xU2, xN1, XR4, xCn) 
-into Perl array reference objects.
-
    my $plr = $s->plr();
-   print "\tGRP_INDX: ", join(", ",@{xU2_array_ref($plr->{GRP_INDX}, $plr->{GRP_CNT})}), "\n";
-   print "\tGRP_MODE: ", join(", ",@{xU2_array_ref($plr->{GRP_MODE}, $plr->{GRP_CNT})}), "\n";
    print "\tGRP_RADX: ", join(", ",@{xU1_array_ref($plr->{GRP_RADX}, $plr->{GRP_CNT})}), "\n";
    print "\tPGM_CHAR: ", join(", ",@{xCn_array_ref($plr->{PGM_CHAR}, $plr->{GRP_CNT})}), "\n";
    print "\tRTN_CHAR: ", join(", ",@{xCn_array_ref($plr->{RTN_CHAR}, $plr->{GRP_CNT})}), "\n";
    print "\tPGM_CHAL: ", join(", ",@{xCn_array_ref($plr->{PGM_CHAL}, $plr->{GRP_CNT})}), "\n";
    print "\tRTN_CHAL: ", join(", ",@{xCn_array_ref($plr->{RTN_CHAL}, $plr->{GRP_CNT})}), "\n";
+
+Utility methods to convert C<libstdf> data types (xU1, xU2, xN1, XR4, xCn) 
+into Perl array reference objects.
 
 =cut
 
@@ -974,16 +903,15 @@ __END__
 
 =head1 SEE ALSO
 
-C<libstdf> is the lower-level C library which performs the grunt work of reading and parsing
-a Standard Test Data Formatted file into C structures availed to Parse::STDF.  
-See L<http://freestdf.sourceforge.net> for documentation and download information. 
+An interface module called C<libstdf.pm> was generated automatically by I<swig> (see L<http://swig.org>) 
+using C<libstdf's> header files as input.  This module is the glue between Parse::STDF and C<libstdf>.
 
 For an intro to the Standard Test Data Format (along with references to detailed documentation) 
 see L<http://en.wikipedia.org/wiki/Standard_Test_Data_Format>.
 
 =head1 AUTHOR
 
-Erick Jordan <ejordan@cpan.org>.
+Erick Jordan <ejordan@cpan.org>
 
 =head1 COPYRIGHT
 

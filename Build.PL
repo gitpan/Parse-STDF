@@ -19,14 +19,7 @@ use warnings;
 use Module::Build;
 use Config;
 
-# Variables below may have different settings depending on your environment:
-# Example:
-#   $LIBSTDF_CONFIG = "/path/to/libstdf-config";
-#   $LIBZZIP_DIR = "/path/to/libzzip";  
-
 my $LIBSTDF_CONFIG = "libstdf-config";
-my $LIBZZIP_DIR = undef; 
-
 my $MIN_SWIG_VERSION = version->parse("2.0.4");
 my $MIN_LIBSTDF_VERSION = version->parse("0.4");
 
@@ -115,7 +108,11 @@ my $build = $class->new(
 	  'Test::More'          => 0,
 	  'version'             => 0,
 	  'ExtUtils::CBuilder'  => '0.28'
-	}
+	},
+    get_options => {
+	                 extra_ldflags => { type => '=s' },
+					 extra_ccflags => { type => '=s' },
+	               }
 );
 
 $build->config(swig_files          => './');
@@ -137,6 +134,12 @@ if($build->have_c_compiler()) {
     $build->notes(swig_installed => $swig_installed);
     my ($ccflags, $ldflags,$swig_flags) = check_c_compiler(
         $build->config('cc'), $build->config('ccflags'));
+
+    # Add command line options here:
+
+    $ldflags .= ' '.$build->args('extra_ldflags') if ( defined( $build->args('extra_ldflags') ) );
+    $ccflags .= ' '.$build->args('extra_ccflags') if ( defined( $build->args('extra_ccflags') ) );
+
     $build->config(extra_linker_flags  => $ldflags);
     $build->config(extra_compiler_flags => $ccflags);
     if($swig_installed) {
@@ -161,17 +164,12 @@ exit;
 sub check_c_compiler 
 {
     my $cc= shift;
+    my $swig_flags=  ' '.get_libstdf_cflags();
     my $ccflags = ' '.get_libstdf_cflags();
 	my $ldflags = ' '.get_libstdf_libs();
-	my $rpath = ( $ldflags =~ /-L(.+?)\s+/ ) ? $1 : ""; 
-    my $swig_flags=  ' '.get_libstdf_cflags();
-	$ccflags .= " -std=c99 -m32"; 
-	$ldflags .= " -m32 -Xlinker -rpath $rpath";
-	if ( defined($LIBZZIP_DIR) )
-	{
-	  $ccflags .= " -I$LIBZZIP_DIR/include";
-	  $ldflags .= " -Xlinker -rpath $LIBZZIP_DIR/lib";
-	} 
+	my $rpath = ( $ldflags =~ /-L(.+?)\s+/ ) ? $1 : "";
+	$ccflags .= " -std=c99";
+	$ldflags .= " -Xlinker -rpath $rpath";
 	return ($ccflags, $ldflags, $swig_flags);
 }
 

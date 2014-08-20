@@ -27,6 +27,15 @@ To install this module, run the following commands:
     ./Build test
     ./Build install
 
+Depending on your environment, you may need to add extra cc and linker flags.
+Here's an example which links with libzzip (used by libstdf).
+
+    perl Build.PL --extra_ccflags="-m32 -I/path/to/libzzip/include" \
+	              --extra_ldflags="-m32 -Xlinker -rpath /path/to/libzzip/lib"
+    ./Build
+    ./Build test
+    ./Build install
+
 
 For compatibility, the older idiom is tolerated:
 

@@ -11,7 +11,7 @@ Parse::STDF - Module for parsing files in Standard Test Data Format
 
 =cut
 
-use version; $VERSION = qv('0.2.2');
+use version; $VERSION = qv('0.2.3');
 
 =pod
 
@@ -839,17 +839,38 @@ sub version # ()
 
 =pod
 
-=head2 xU1_array_ref, xU2_array_ref, xN1_array_ref, xR4_array_ref, xCn_array_ref
+=head1 UTILITY FUNCTIONS
 
-   my $plr = $s->plr();
-   print "\tGRP_RADX: ", join(", ",@{xU1_array_ref($plr->{GRP_RADX}, $plr->{GRP_CNT})}), "\n";
-   print "\tPGM_CHAR: ", join(", ",@{xCn_array_ref($plr->{PGM_CHAR}, $plr->{GRP_CNT})}), "\n";
-   print "\tRTN_CHAR: ", join(", ",@{xCn_array_ref($plr->{RTN_CHAR}, $plr->{GRP_CNT})}), "\n";
-   print "\tPGM_CHAL: ", join(", ",@{xCn_array_ref($plr->{PGM_CHAL}, $plr->{GRP_CNT})}), "\n";
-   print "\tRTN_CHAL: ", join(", ",@{xCn_array_ref($plr->{RTN_CHAL}, $plr->{GRP_CNT})}), "\n";
+Utility functions for converting C<libstdf> data types C<[xU1, xU2, xN1, xR4, xCn]> into Perl array reference objects.
 
-Utility methods to convert C<libstdf> data types (xU1, xU2, xN1, XR4, xCn) 
-into Perl array reference objects.
+=over 4
+
+=item xU1_array_ref(xU1,len)
+
+  my $plr = $s->plr();
+  print "\tGRP_RADX: ", join(", ",@{xU1_array_ref($plr->{GRP_RADX}, $plr->{GRP_CNT})}), "\n";
+
+=item xU2_array_ref(xU2,len)
+ 
+  my $ftr = $s->ftr();
+  print "\tPGM_INDX: ", join(", ", @{xU2_array_ref($ftr->{PGM_INDX}, $ftr->{PGM_ICNT})} ), "\n";
+
+=item xN1_array_ref(xN1,len)
+
+  my $mpr = $s->mpr();
+  print "\tRTN_STAT: ", join(", ", @{xN1_array_ref($mpr->{RTN_STAT}, $mpr->{RTN_ICNT})} ), "\n";
+
+=item xR4_array_ref(xR4,len)
+
+  my $mpr = $s->mpr();
+  print "\tRTN_RSLT: ", join(", ", @{xR4_array_ref($mpr->{RTN_RSLT}, $mpr->{RSLT_CNT})} ), "\n";
+
+=item xCn_array_ref(xCn,len)
+
+  my $plr = $s->plr();
+  print "\tPGM_CHAR: ", join(", ",@{xCn_array_ref($plr->{PGM_CHAR}, $plr->{GRP_CNT})}), "\n";
+
+=back
 
 =cut
 

@@ -35,7 +35,7 @@
    "provides" : {
       "Parse::STDF" : {
          "file" : "lib/Parse/STDF.pm",
-         "version" : "v0.2.3"
+         "version" : "v0.2.4"
       },
       "libstdf" : {
          "file" : "lib/libstdf.pm",
@@ -164,5 +164,5 @@
          "http://opensource.org/licenses/gpl-license.php"
       ]
    },
-   "version" : "v0.2.3"
+   "version" : "v0.2.4"
 }

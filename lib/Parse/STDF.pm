@@ -11,7 +11,7 @@ Parse::STDF - Module for parsing files in Standard Test Data Format
 
 =cut
 
-use version; $VERSION = qv('0.2.3');
+use version; $VERSION = qv('0.2.4');
 
 =pod
 

@@ -16,7 +16,7 @@ name: Parse-STDF
 provides:
   Parse::STDF:
     file: lib/Parse/STDF.pm
-    version: v0.2.3
+    version: v0.2.4
   libstdf:
     file: lib/libstdf.pm
     version: 0
@@ -113,4 +113,4 @@ requires:
   version: 0
 resources:
   license: http://opensource.org/licenses/gpl-license.php
-version: v0.2.3
+version: v0.2.4
